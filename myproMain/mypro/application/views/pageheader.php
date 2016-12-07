@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>点金项目细化分包管理平台 DianJin Project Management Platform </title>
+
+<link rel="shortcut icon" href="<?=base_url()?>resource/images/icons/favicon.ico">
+<link rel="Bookmark" href="<?=base_url()?>resource/images/icons/favicon.ico">
+<link rel="stylesheet" href="<?php echo base_url();?>resource/css/bootstrap-fileupload.min.css" type="text/css" />
+
+<link rel="stylesheet" href="<?=base_url()?>resource/css/style.default.css" type="text/css" />
+<link rel="stylesheet" href="<?=base_url()?>resource/prettify/prettify.css" type="text/css" />
+<link rel="stylesheet" href="<?=base_url()?>resource/css/responsive-tables.css">
+<script type="text/javascript" src="<?=base_url()?>resource/js/bootstrap-fileupload.min.js"></script>
+<script type="text/javascript" src="<?=base_url()?>resource/js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="<?=base_url()?>resource/js/jquery-migrate-1.1.1.min.js"></script>
+<script type="text/javascript" src="<?=base_url()?>resource/js/jquery-ui-1.10.3.min.js"></script>
+<script type="text/javascript" src="<?=base_url()?>resource/prettify/prettify.js"></script>
+<script type="text/javascript" src="<?=base_url()?>resource/js/modernizr.min.js"></script>
+<script type="text/javascript" src="<?=base_url()?>resource/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="<?=base_url()?>resource/js/jquery.cookie.js"></script>
+<script type="text/javascript" src="<?=base_url()?>resource/js/jquery.uniform.min.js"></script>
+<script type="text/javascript" src="<?=base_url()?>resource/js/flot/jquery.flot.min.js"></script>
+<script type="text/javascript" src="<?=base_url()?>resource/js/flot/jquery.flot.resize.min.js"></script>
+<script type="text/javascript" src="<?=base_url()?>resource/js/responsive-tables.js"></script>
+<script type="text/javascript" src="<?=base_url()?>resource/js/jquery.slimscroll.js"></script>
+<script type="text/javascript" src="<?=base_url()?>resource/js/jquery.alerts.js"></script>
+<script type="text/javascript" src="<?=base_url()?>resource/js/jquery.jgrowl.js"></script>
+<script type="text/javascript" src="<?=base_url()?>resource/js/custom.js"></script>
+<script type="text/javascript" src="<?=base_url()?>resource/js/elements.js"></script>
+
+<script type="text/javascript" src="<?=base_url()?>resource/js/bootstrap-timepicker.min.js"></script>
+<script type="text/javascript" src="<?=base_url()?>resource/js/forms.js"></script>
+<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="<?=base_url()?>resource/js/excanvas.min.js"></script><![endif]-->
+
+
+</head>
+
+<body>
+<div id="mainwrapper" class="mainwrapper">
+    
+    <div class="header">
+        <div class="logo">
+            <a href="<?=base_url()?>dashboard"><img src="<?=base_url()?>resource/images/logo.png" alt="" /></a>
+        </div>
+        <div class="headerinner">
+            <ul class="headmenu">
+                <li class="odd">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <span class="count">4</span>
+                        <span class="head-icon head-message"></span>
+                        <span class="headmenu-label">站内通告</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="nav-header">站内通告</li>
+                        <li><a href=""><span class="icon-envelope"></span> New message from <strong>Jack</strong> <small class="muted"> - 19 hours ago</small></a></li>
+                        <li><a href=""><span class="icon-envelope"></span> New message from <strong>Daniel</strong> <small class="muted"> - 2 days ago</small></a></li>
+                        <li><a href=""><span class="icon-envelope"></span> New message from <strong>Jane</strong> <small class="muted"> - 3 days ago</small></a></li>
+                        <li><a href=""><span class="icon-envelope"></span> New message from <strong>Tanya</strong> <small class="muted"> - 1 week ago</small></a></li>
+                        <li><a href=""><span class="icon-envelope"></span> New message from <strong>Lee</strong> <small class="muted"> - 1 week ago</small></a></li>
+                        <li class="viewmore"><a href="messages.html">View More Messages</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a class="dropdown-toggle" data-toggle="dropdown" data-target="#">
+                    <span class="count">10</span>
+                    <span class="head-icon head-users"></span>
+                    <span class="headmenu-label">设计推荐</span>
+                    </a>
+                    <ul class="dropdown-menu newusers">
+                        <li class="nav-header">设计开发推荐</li>
+                        <li>
+                            <a href="">
+                                <img src="<?=base_url()?>resource/images/photos/thumb1.png" alt="" class="userthumb" />
+                                <strong>张三</strong>
+                                <small>April 20, 2013</small>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <img src="<?=base_url()?>resource/images/photos/thumb2.png" alt="" class="userthumb" />
+                                <strong>李四</strong>
+                                <small>April 19, 2013</small>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <img src="<?=base_url()?>resource/images/photos/thumb3.png" alt="" class="userthumb" />
+                                <strong>王五</strong>
+                                <small>April 19, 2013</small>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <img src="<?=base_url()?>resource/images/photos/thumb4.png" alt="" class="userthumb" />
+                                <strong>赵六</strong>
+                                <small>April 18, 2013</small>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <img src="<?=base_url()?>resource/images/photos/thumb5.png" alt="" class="userthumb" />
+                                <strong>李刚</strong>
+                                <small>April 16, 2013</small>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="odd">
+                    <a class="dropdown-toggle" data-toggle="dropdown" data-target="#">
+                    <span class="count">1</span>
+                    <span class="head-icon head-bar"></span>
+                    <span class="headmenu-label">站内统计</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="nav-header">Statistics</li>
+                        <li><a href=""><span class="icon-align-left"></span> New Reports from <strong>Products</strong> <small class="muted"> - 19 hours ago</small></a></li>
+                        <li><a href=""><span class="icon-align-left"></span> New Statistics from <strong>Users</strong> <small class="muted"> - 2 days ago</small></a></li>
+                        <li><a href=""><span class="icon-align-left"></span> New Statistics from <strong>Comments</strong> <small class="muted"> - 3 days ago</small></a></li>
+                        <li><a href=""><span class="icon-align-left"></span> Most Popular in <strong>Products</strong> <small class="muted"> - 1 week ago</small></a></li>
+                        <li><a href=""><span class="icon-align-left"></span> Most Viewed in <strong>Blog</strong> <small class="muted"> - 1 week ago</small></a></li>
+                        <li class="viewmore"><a href="charts.html">View More Statistics</a></li>
+                    </ul>
+                </li>
+                <li class="right">
+                    <div class="userloggedinfo">
+                        <img src="<?=base_url()?>resource/images/photos/thumb1.png" alt="偶是Will,你好" />
+                        <div class="userinfo">
+                            <h5><?=$this->session->userdata('realname');?> <small>- <?=$this->session->userdata('useremail');?></small></h5>
+                            <ul>
+                                <li><a href="<?=base_url()?>user/editprofile">编辑 Edit Profile</a></li>
+                                <!--  <li><a href="">设置 Account Settings</a></li>        -->
+                                <li><a href="<?=base_url()?>user/logout">登出 Sign Out</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+            </ul><!--headmenu-->
+        </div>
+    </div>
+
+    <div class="leftpanel">
+        <div class="leftmenu" id="lm">        
+            <ul class="nav nav-tabs nav-stacked">
+            	<li class="nav-header">导航 Navigation</li>
+
+    <?php 
+		$uri = $this->uri->uri_string();
+		//echo $uri;
+		$this->load->library('session');
+		//echo $this->session->userdata('useremail');
+		$useremail = $this->session->userdata('useremail');
+		outputmenu($uri,$useremail); 
+		?>            	
+
+                </li>
+            </ul>
+            
+            
+
+
+        </div><!--leftmenu-->
+        
+    </div><!-- leftpanel -->
+    
+
+    
+    
+    
+    

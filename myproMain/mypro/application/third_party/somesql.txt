@@ -1,0 +1,5 @@
+mysqldump -uroot -psaadmin pms > pmsbak.txt
+
+drop database pms
+use pms
+source pmsbak.txt

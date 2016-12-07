@@ -1,0 +1,40 @@
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+class Dashboard extends CI_Controller{
+	public function Dashboard()
+	{
+		parent::__construct();
+		$this->load->helper('url');
+		$this->load->helper('menu');
+		$this->load->library('session');
+		$this->load->model('Dia_Request_Org','request_org');
+		$this->load->model('Dia_Project','project');
+		header("Content-type: text/html; charset=utf-8");
+	}
+	
+	public function index()
+	{
+		$useremail = $this->session->userdata('useremail');
+		//var_dump($useremail) ;
+		if ($useremail == "" ) 
+		{
+			echo "未成功登录系统或登录超时，请返回!";
+		}
+		else 
+		{
+			/*
+			 * 做基本的初始化,如将过期的原始需求状态至为未生效,即0
+			 * 准备要显示的统计数据,如所有项目个数,所有原始需求个数,所有IN PROGRESS的需求,正在开发的需求,正在设计的需求,正在测试的需求,已结算完结的需求,可接单的乙方个数,可用的总体设计个数等
+			 */
+			//$this->request_org->initovertime();
+			$projectcount = $this->project->getCountByUID($this->session->userdata('userid'));
+			$data["title"] = "看板";
+			$data["heading"] = "看板标题";
+			$data["projectCount"] = $projectcount;
+			$this->load->view('dashboard',$data);
+			
+		}
+		//var_dump($useremail);
+	}
+}
+

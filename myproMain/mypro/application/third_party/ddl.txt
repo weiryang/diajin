@@ -1,0 +1,643 @@
+# create database pms character set gbk collate gbk_chinese_ci; 
+
+#描述：组定义表
+#id
+#groupname
+#groupdescription
+
+
+
+#描述：组和用户对应表
+#id
+#userid
+
+
+
+#描术：接单表
+#id
+#reqinitid 需求分析的ID
+#reqinituserid 需求分析确认userID 确定需求分析OK的人员ID
+#devid 开发ID
+#devuserid 为空时是未指定 不为空时是确认了的用户ID  
+#designid 设计ID
+#desiguserid 
+#testid 测试ID
+#testuserid 测试确认 0 未确认 1 已确认
+#checkflag 0 未审核 1 已审核,此时要付款给乙方和网站
+#createbyid 建立人
+#createdatetime 建立时间
+#remark 备用
+
+CREATE TABLE dia_reqfollow
+(
+	id INTEGER NOT NULL AUTO_INCREMENT,
+	reqinitid INTEGER,
+	reqinituserid INTEGER,
+	devid INTEGER,
+	devuserid INTEGER,
+	designid INTEGER,
+	designuserid INTEGER,
+	testid INTEGER,
+	testuserid INTEGER,
+	checkflag INTEGER,
+	createbyid INTEGER,
+	createdatetime TIMESTAMP,
+	remark VARCHAR(50),
+	PRIMARY KEY (id)
+)
+;
+
+#描述：用户表
+#id
+#userEmail 			用户email
+#password 			口令
+#realName 			真名
+#idnumber 			身份证号
+#mobileNum 			手机号
+#signWithUs 		是否签约 0--未签约 1---已签
+#enterpriseID 		企业ID
+#currentIdentity 	当前身份
+#shortform 			简写
+#city 				所在城市
+#about 				关于
+#imageaddress 		图片所在地址
+#status 			状态 0 无效 1生效  
+
+CREATE TABLE dia_user
+(
+	id INTEGER NOT NULL AUTO_INCREMENT,
+	userEmail VARCHAR(40),
+	password VARCHAR(20),
+	realName VARCHAR(30),
+	idnumber VARCHAR(20),
+	mobileNum VARCHAR(20),
+	city VARCHAR(50),
+	about TEXT,
+	imageaddress VARCHAR(300),
+	signWithUs INTEGER,
+	enterpriseID INTEGER,
+	shortform VARCHAR(20),
+	pictureAddress VARCHAR(100),
+	status INTEGER DEFAULT 0,
+	remark VARCHAR(50),
+	PRIMARY KEY (id)
+) 
+;
+
+#描述：角色-权限对应表
+#id
+#roleId 		角色ID
+#permissionId 	权限ID
+#remark 		备用
+
+CREATE TABLE dia_role_permission
+(
+	id INTEGER NOT NULL AUTO_INCREMENT,
+	roleId INTEGER,
+	permissionId INTEGER,
+	remark INTEGER,
+	PRIMARY KEY (id)
+) 
+;
+
+
+#描述：角色表
+#id
+#rolename 角色名称
+
+CREATE TABLE dia_role
+(
+    id INTEGER NOT NULL AUTO_INCREMENT,
+    rolename VARCHAR(50),
+    remark INTEGER,
+    PRIMARY KEY (id)
+) 
+;
+
+
+#描述：权限表
+#id
+#permissionName 权限名称
+#
+
+CREATE TABLE dia_permission
+(
+	id INTEGER NOT NULL AUTO_INCREMENT,
+	permissionName VARCHAR(30),
+	remark INTEGER,
+	PRIMARY KEY (id)
+) 
+;
+
+
+
+#描述：用户-权限存储表
+#id
+#userid 用户ID 
+#roleId 角色ID
+#remark 备用字段
+
+CREATE TABLE dia_user_role
+(
+	id INTEGER NOT NULL AUTO_INCREMENT,
+	userId INTEGER,
+	roleId INTEGER,
+	remark VARCHAR(50),
+	PRIMARY KEY (id)
+) 
+;
+
+
+#描述：模块存储 
+#id 
+#module_name 	模块名称 
+#project_id 	项目ID
+#module_id 		模块ID 
+#content 		模块内容 
+
+CREATE TABLE dia_module
+(
+	id INTEGER NOT NULL AUTO_INCREMENT,
+	module_name VARCHAR(200),
+	project_id INTEGER,
+	module_id INTEGER,
+	content TEXT,
+	createbyid INTEGER,
+	createdatetime TIMESTAMP,
+	PRIMARY KEY (id),
+	CONSTRAINT `dia_project_fk_project_id` FOREIGN KEY (project_id) REFERENCES  dia_project(id)
+)
+; 
+
+#描述：原始需求表
+#id
+#caption 		需求标题
+#detail 		具体需求细节
+#attach1 		附件1
+#attach2 		附件2
+#price 			价格
+#payflag 		付款标志 0－未付 1－已付
+#type 			需求类型，0---新需求，1---改进，2---bug，3---其他
+#status 		状态 0---未生效 1---生效 2---完结
+#isopen 		是否开放 0－不开放（仅自己可见） 1－半开放（自己或指定群组或人员可见）   2－所有人可见
+#assignto 		将此需求分配给某人 
+#emerlevel 		紧急度 0-不紧急 1-普通 2-紧急 3-非常紧急
+#importlevel 	重要度 0-不重要 1-普通 2-重要 3-非常重要
+#begindate 		开始日期
+#enddate 		结束日期
+#model_id		模块id
+#project_id 	项目id
+#createdatetime 建立时间
+#createbyid 	建立人
+#remark 		备用
+
+CREATE TABLE dia_request_org
+(
+	id INTEGER NOT NULL AUTO_INCREMENT,
+	caption VARCHAR(200),
+	detail TEXT,
+	attach1 VARCHAR(200),
+	attach2 VARCHAR(200),
+	price INTEGER DEFAULT 0,
+	payflag INTEGER DEFAULT 0,
+	type INTEGER DEFAULT 0,
+	status INTEGER DEFAULT 1,
+	reqinitstatus INTEGER DEFAULT 0,
+	designstatus INTEGER DEFAULT 0,
+	devstatus INTEGER DEFAULT 0,
+	teststatus INTEGER DEFAULT 0,
+	isopen INTEGER DEFAULT 2,
+	assignto INTEGER ,
+	assigndate DATETIME,
+	emerlevel INTEGER DEFAULT 1,
+	importlevel INTEGER DEFAULT 1,
+	begin_date DATETIME,
+	end_date DATETIME,
+	module_id INTEGER,
+	projectid INTEGER,
+	createdatetime TIMESTAMP,
+	createbyid INTEGER,
+	remark VARCHAR(50),
+	PRIMARY KEY (id),
+	CONSTRAINT `dia_project_fk_projectid` FOREIGN KEY (projectid) REFERENCES  dia_project(id)
+) 
+;
+
+#描述：整理后需求
+#id
+#request_org_id 	初始需求id
+#caption 			标题
+#inputtext 			输入
+#outputtext 		输出
+#description 		详细描述 
+#effectEstimate	 	对以前系统/架构的影响评估
+#dealprocess 		处理流程
+#assignto 			分配至某人
+#status 			0 未开始 1 进行中 2 结束 3 取消
+#attach1 			附件
+#attachAddress 		需求文件地址
+#selectedflag 		0 未选中 1 选中此单为正式的需求分析
+#createbyid 		建立人
+#createbydatetime 	建立时间
+#remark 预留
+
+CREATE TABLE dia_request_init
+( id INTEGER NOT NULL AUTO_INCREMENT,
+	request_org_id INTEGER,
+	caption VARCHAR(200),
+	inputtext VARCHAR(2000),
+	outputtext VARCHAR(2000),
+	description TEXT,
+	effectEstimate TEXT,
+	dealprocess TEXT,
+	status INTEGER DEFAULT 0,
+	assignto INTEGER DEFAULT 0,
+	assigndate DATETIME,
+	attach1 VARCHAR(200),
+	attachAddress VARCHAR(400),
+	price INTEGER DEFAULT 0, 
+	selectedflag INTEGER DEFAULT 0, 
+	createbyid INTEGER,
+	createdatetime TIMESTAMP,
+	remark BIGINT,
+	PRIMARY KEY (id),
+    CONSTRAINT `dia_request_init_fk_requestorgid` FOREIGN KEY (request_org_id) REFERENCES  dia_request_org(id)
+) 
+;
+
+#描述：详细设计表
+#id
+#caption            标题
+#description        设计细节描述
+#requestinit_id     整理后需求id
+#status             0 未开始 1 进行中 2 结束 3 取消
+#assignto           分配至某人
+#assigndate			分配时间
+#attach1            附件1
+#attach2            附件2
+#price              出价
+#begindate          开始日期
+#enddate            结束日期
+#createdatetime     建立日期
+#createbyid         建立人
+#remark             备用
+
+CREATE TABLE dia_design_detail
+(
+	id INTEGER NOT NULL AUTO_INCREMENT,
+	caption VARCHAR(100),
+	description TEXT,
+	requestinit_id INTEGER,
+	status INTEGER,
+	assignto INTEGER,
+	assigndate DATETIME,
+	attach1 VARCHAR(200),
+	attach2 VARCHAR(200),
+	price INTEGER DEFULT 0,
+	begindate DATETIME,
+	enddate DATETIME,
+	createdatetime TIMESTAMP,
+	createbyid INTEGER,
+	remark BIGINT,
+	PRIMARY KEY (id),
+	KEY (requestorg_id)
+) 
+;
+
+#描述：开发表
+#id
+#caption     	开发标题
+#description 	开发细节
+#status      	开发状态 0 未开始 1 开始中 2 已提交并结束
+#assignto    	将此开发任务分配至某人
+#assigndate 	分配时间
+#attach1     	附件1
+#attach2     	附件2
+#csrLevel    	难易度等级 0 容易 1 普通 2 难 3最难
+#beginDate   	开始时间
+#endDate     	结束时间
+#price      	出价
+#detailDesignID 对应详细设计ID
+#createDatetime 建立日期
+#createbyID 	建立人
+#remark 		备用
+
+CREATE TABLE dia_develope_csr
+(
+	id INTEGER NOT NULL AUTO_INCREMENT,
+	caption VARCHAR(30),
+	description TEXT,
+	status INTEGER DEFAULT 0, 
+	assignto INTEGER DEFAULT 0,
+	assigndate DATETIME,
+	price INTEGER DEFAULT 0,
+	attach1 TEXT,
+	attach2 TEXT,
+	csrlevel INTEGER DEFAULT 1,
+	begindate DATETIME,
+	enddate DATETIME,
+	designid INTEGER,
+	createdatetime TIMESTAMP,
+	createbyid INTEGER,
+	remark BIGINT,
+	PRIMARY KEY (id)
+) 
+;
+
+#描述：测试表
+#id
+#caption 		测试标题
+#description 	测试描述
+#devcsrid 		对应的开发ID
+#testcsrid 		测试用例ID
+#status      	开发状态 0 未开始 1 开始中 2 已提交并结束
+#assignto       分配至某人 
+#assigntodate 	分配时间
+#price 			出价
+#testinput 		测试输入
+#testoutput 	测试输出
+#testresult 	测试结果
+#checkflag 		审核标志 0 未审核 1 已审核（付款）
+#createbyid 
+#createdatetime
+#remark 备用
+
+CREATE TABLE dia_test_csr
+(
+	id INTEGER NOT NULL AUTO_INCREMENT,
+	caption VARCHAR(200),
+	description TEXT,
+	devcsrid INTEGER,
+	testcsrid INTEGER,
+	status INTEGER DEFAULT 0,
+	assignto INTEGER DEFAULT 0,
+	assigntodate DATETIME,
+	price INTEGER DEFAULT 0,
+	testinput VARCHAR(200),
+	testoutput VARCHAR(200),
+	testresult VARCHAR(200),
+	checkflag INTEGER DEFAULT 0,
+	createbyid INTEGER,
+	createdatetime TIMESTAMP,
+	remark VARCHAR(50),
+	PRIMARY KEY(id)
+)
+;
+
+
+#描述:文件上传
+#filename 文件名
+#size 大小
+#filetype 文件类型
+#fileext 文件扩展名
+#frommod 属于哪个模块 reqorg:原始需求
+#modid 上传所属模块的对应ID
+CREATE TABLE dia_uploadfiles
+(
+	id INTEGER NOT NULL AUTO_INCREMENT,
+	filename VARCHAR(200),
+	size VARCHAR(100),
+	filetype VARCHAR(100),
+	fileext VARCHAR(50),
+	frommod VARCHAR(30),
+	modid INTEGER,
+	createbyid INTEGER,
+	createdatetime TIMESTAMP,
+	PRIMARY KEY (id)
+);
+
+
+//项目和原始需求主外键关系设定
+alter table dia_request_org add constraint fk_dia_request_org foreign key(projectID) references dia_project(id);
+
+//原始需求和需求分析主外键关系设定
+alter table dia_request_init add constraint fk_dia_request_init foreign key(request_org_id) references dia_reqeust_org(id);
+
+
+
+#描述：用例表
+#id 
+#caption 用例标题
+#description 用例内容
+#teststatus 用例状态
+#testresult 用例结果
+#devid 开发csr的id
+#begindate 开始日期
+#enddate 结束日期
+#createdatetime 建立时间
+#createbyid 建立人
+#remark 备用字段
+
+CREATE TABLE dia_test_case
+(
+	id INTEGER NOT NULL AUTO_INCREMENT,
+	caption VARCHAR(50),
+	description TEXT,
+	teststatus INTEGER,
+	testresult VARCHAR(200),
+	devcsrid INTEGER,
+	begindate DATETIME,
+	enddate DATETIME,
+	createByID INTEGER,
+	createdatetime TIMESTAMP,
+	remark BIGINT,
+	PRIMARY KEY (id),
+	KEY (devID)
+) 
+;
+
+
+#描述：项目种类
+#id
+#typeName 种类名称
+#remark 备用
+
+CREATE TABLE dia_project_type
+(
+	id INTEGER NOT NULL AUTO_INCREMENT,
+	typeName VARCHAR(30),
+	remark INTEGER,
+	PRIMARY KEY (id)
+) 
+;
+
+
+#描述：项目表
+#id
+#title 			项目标题
+#type 			项目类型 0开发 1维护 2开发兼维护
+#alils 			别名
+#picture1 		图片1
+#picture2 		图片2
+#picture3 		图片3
+#picture4 		图片4
+#picture5 		图片5
+#project_detail 项目内容描述
+#begin_date 	开始日期
+#end_date 		结束日期
+#csr_count csr	数量
+#status 		状态 0---未生效 1---生效/审核通过 2---做废
+#budget 		预算
+#current_status 当前状态 0 未开始 1 已开始 2 已结束
+#payedornot 	是否已付费
+#icopic 		项目图标
+#city 			项目所在城市
+#cellphone 		联系电话
+#liveOrNot 		是否现场开发 0 不需要  1 需要
+#needcode 		是否需要源码
+#isopen 		是否开放 0－不开放（仅自己可见） 1－半开放（自己或指定群组或人员可见）   2－所有人可见
+#createdatetime 建立日期
+#createbyid 	建立人
+#attach1 		附件1
+#attach2 		附件2
+#keywords 		关键字
+#remark 		备用
+
+CREATE TABLE dia_project	
+(
+	id INTEGER NOT NULL AUTO_INCREMENT,
+	title VARCHAR(100),
+	type INTEGER,
+	alils VARCHAR(100),
+	picture1 VARCHAR(200),
+	picture2 VARCHAR(200),
+	picture3 VARCHAR(200),
+	picture4 VARCHAR(200),
+	picture5 VARCHAR(200),
+	project_detail TEXT,
+	begin_date DATETIME,
+	end_date DATETIME,
+	csr_count INTEGER,
+	status INTEGER default 1,
+	budget INTEGER,
+	current_status INTEGER,
+	payedornot BIGINT,
+	icopic VARCHAR(200),
+	city VARCHAR(50),
+	cellphone VARCHAR(50),
+	liveOrNot INTEGER DEFAULT 0,
+	needcode INTEGER DEFAULT 0,
+	isopen INTEGER DEFAULT 2,
+	createDatetime TIMESTAMP,
+	createByID INTEGER,
+	attach1 VARCHAR(200),
+	attach2 VARCHAR(200),
+	keywords VARCHAR(100),
+	remark BIGINT,
+	PRIMARY KEY (id),
+	KEY (Type)
+) 
+;
+
+
+#描述：总体设计表
+#id
+#designTarget 设计目标
+#devLanguage 开发语言
+#devDatabase 所用数据库
+#description 设计细节
+#projectID 项目ID
+#key_tech 关键技术
+#env_des 环境描述
+#codeaddress 框架源代码地址
+#price 出价
+#isopen 是否开放 0－不开放（仅自己可见） 1－半开放（自己或指定群组或人员可见）   2－所有人可见
+#status 0 无效 1 生效
+#attach1 附件1
+#attach2 附件2
+#createByID 建立人
+#createDatetime 建立日期 
+
+CREATE TABLE dia_design_framework
+(
+	id INTEGER NOT NULL AUTO_INCREMENT,
+	designtarget TEXT,
+	devlanguage VARCHAR(50),
+	devdatabase VARCHAR(50),
+	description TEXT,
+	projectid INTEGER,
+	key_tech VARCHAR(300),
+	env_des VARCHAR(500),
+	codeaddress VARCHAR(300),
+	price INTEGER DEFAULT 0,
+	isopen INTEGER DEFAULT 2,
+	status INTEGER DEFAULT 1,
+	attach1 VARCHAR(200),
+	attach2 VARCHAR(200),
+	createbyID INTEGER,
+	createdatetime TIMESTAMP,
+	remark BIGINT,
+	PRIMARY KEY (id),
+	KEY (projectID),
+	CONSTRAINT `dia_design_framework_fk_projectid` FOREIGN KEY (projectid) REFERENCES  dia_project(id)
+) 
+;
+
+
+
+#描述：企业表
+#id
+#enterpriseName 企业名称
+#signWithUs 签约情况
+#intro 介绍
+#remark 备用
+
+CREATE TABLE dia_enterprise
+(
+	id INTEGER NOT NULL AUTO_INCREMENT,
+	enterpriseName VARCHAR(100),
+	signWithUs CHAR(10),
+	intro TEXT,
+	remark BIGINT,
+	PRIMARY KEY (id)
+) 
+;
+
+
+
+/*
+
+
+drop table dia_model;
+drop table dia_detail_design;
+drop table dia_design_framework;
+drop table dia_project;
+drop table dia_request_init;
+drop table dia_develope_csr;
+drop table dia_enterprise;
+drop table dia_permission;
+drop table dia_project_type;
+drop table dia_request_org;
+drop table dia_role;
+drop table dia_role_permission;
+drop table dia_test_case;
+drop table dia_user;
+drop table dia_user_role;
+
+insert into dia_project(title,project_detail) values('测试项目1','这个项目是一个测试项目');
+insert into dia_project(title,project_detail) values('测试项目2','这个项目是一个测试项目');
+insert into dia_project(title,project_detail) values('测试项目3','这个项目是一个测试项目');
+
+insert into dia_module(module_name,content,project_id,createbyid) values('总模块','test',15,4);
+
+insert into dia_user(userEmail,password,realName,mobileNum,signWithUs) values('weiryang2008@gmail.com','123456','好人一个','15546521528','1');
+insert into dia_user(userEmail,password,realName,mobileNum,signWithUs) values('admin','123456','Will.Yang','15546521528','1');
+
+查看字符集
+show variables like '%char%';
+
+修改表和字段的字符集
+//修改数据库
+alter database name character set utf8;
+//修改表
+alter table 表名 convert to character set gbk;
+//修改字段
+alter table 表名 modify column '字段名' varchar(30) character set gbk not null;
+//添加表字段
+alter table 表名 add column '字段名' varchar (20) character set gbk;
+注:执行命令过程中字段名不加引号
+
+alter table dia_request_init add constraint request_init_cons foreign key(request_org_id) references dia_request_org(id);
+insert into dia_request_init(request_org_id,inputtext,outputtext,description,effectEstimate) values(10,'输入信息测试','输出信息测试',' 这个是整理后的需求测试','新功能无影响');
+
+*/
